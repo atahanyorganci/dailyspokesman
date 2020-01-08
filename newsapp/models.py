@@ -6,7 +6,7 @@ from newsapp import db
 class Article(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     serialno = db.Column(db.Integer, nullable=False, unique=True)
-    category = db.Column(db.Integer, nullable=False)
+    category = db.Column(db.Text, nullable=False)
     title = db.Column(db.Text, nullable=False)
     subtitle = db.Column(db.Text, nullable=False)
     date = db.Column(db.DateTime, default=datetime.utcnow)
