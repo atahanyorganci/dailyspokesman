@@ -1,9 +1,10 @@
-from newsapp import db
+from newsapp import db, celery
 from newsapp.config import Config
 from newsapp.models import Article
 from newsapp.util.parser import parse_links, parse_news
 
 
+@celery.task
 def update_news(category: str):
     links = parse_links(category)
     print(f'* Found {len(links)} links in {category.upper()} category.')
