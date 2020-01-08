@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center">
+        <blockquote class="blockquote text-center">
+            <h1>{{ error['title'] }}</h1>
+            <h3>{{ error['description'] }}</h3>
+            <p>
+                {{ error['fix'] }}
+            </p>
+        </blockquote>
+    </div>
+</div>
+</div>
+{% endblock %}
