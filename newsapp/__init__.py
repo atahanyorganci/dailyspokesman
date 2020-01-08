@@ -16,3 +16,7 @@ celery.conf.update(app.config)
 
 from newsapp import routes
 from newsapp import tasks
+
+from newsapp.errors import bp
+
+app.register_blueprint(bp)
