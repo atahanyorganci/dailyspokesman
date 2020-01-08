@@ -7,3 +7,5 @@ class Config:
     SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or \
         'sqlite:///' + os.path.join(BASE_DIR, 'news.db')
     SQLALCHEMY_TRACK_MODIFICATIONS = False
+    CATEGORIES = ['gundem', 'dunya', 'ekonomi']
+    SCRAPPER_BASE_URL = 'https://www.sozcu.com.tr/kategori/'

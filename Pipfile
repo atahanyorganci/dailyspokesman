@@ -10,7 +10,9 @@ autopep8 = "*"
 [packages]
 flask = "*"
 flask-sqlalchemy = "*"
-flask-migrate = "*"
+flask-migrate = "*" 
+bs4 = "*"
+requests = "*"
 
 [requires]
 python_version = "3.6"
