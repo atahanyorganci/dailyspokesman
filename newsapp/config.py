@@ -9,3 +9,5 @@ class Config:
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     CATEGORIES = ['gundem', 'dunya', 'ekonomi']
     SCRAPPER_BASE_URL = 'https://www.sozcu.com.tr/kategori/'
+    CELERY_BROKER_URL = 'redis://localhost:6379/0'
+    CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'
