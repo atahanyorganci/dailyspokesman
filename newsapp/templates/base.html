@@ -15,7 +15,7 @@
         <nav class="navbar navbar-expand-lg navbar-light bg-light navigation">
             <div class="d-flex flex-grow-1">
                 <span class="w-100 d-lg-none d-block"></span>
-                <a href="{{ url_for('index') }}" class="navbar-brand">DailySpokesMan</a>
+                <a href="{{ url_for('main.index') }}" class="navbar-brand">DailySpokesMan</a>
                 <div class="w-100 text-right">
                     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#brandNavbar">
                         <span class="navbar-toggler-icon"></span>
@@ -24,13 +24,13 @@
             </div>
             <div class="collapse navbar-collapse flex-grow-1 text-right" id="brandNavbar">
                 <ul class="navbar-nav ml-auto flex-nowrap">
-                    <a href="{{ url_for('news', page='head', number=1) }}" class="nav-item nav-link">
+                    <a href="{{ url_for('main.news', category='head', number=1) }}" class="nav-item nav-link">
                         Headlines
                     </a>
-                    <a href="{{ url_for('news', page='world', number=1) }}" class="nav-item nav-link">
+                    <a href="{{ url_for('main.news', category='world', number=1) }}" class="nav-item nav-link">
                         world
                     </a>
-                    <a href="{{ url_for('news', page='econ', number=1) }}" class="nav-item nav-link">
+                    <a href="{{ url_for('main.news', category='econ', number=1) }}" class="nav-item nav-link">
                         Economy
                     </a>
                     <a class="nav-item nav-link" href="https://github.com/atahanyorganci/dailyspokesman">

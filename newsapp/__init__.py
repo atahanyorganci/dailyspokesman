@@ -14,9 +14,10 @@ migrate = Migrate(app, db)
 celery = Celery(app.name, broker=app.config['CELERY_BROKER_URL'])
 celery.conf.update(app.config)
 
-from newsapp import routes
 from newsapp import tasks
 
-from newsapp.errors import bp
+from newsapp.errors import bp as errors
+from newsapp.main import bp as main
 
-app.register_blueprint(bp)
+app.register_blueprint(errors)
+app.register_blueprint(main)
