@@ -3,6 +3,7 @@ from flask import render_template
 from newsapp.errors import bp
 from newsapp.errors.descriptions import DESCRIPTIONS
 
+
 @bp.app_errorhandler(400)
 def bad_request(error):
     return render_template('error.html', error=DESCRIPTIONS[404]), 400
