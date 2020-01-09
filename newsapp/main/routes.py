@@ -3,7 +3,7 @@ from flask import abort, render_template, url_for
 from newsapp.config import Config
 from newsapp.main import bp
 from newsapp.main.pagination import pagination
-from newsapp.models import Article
+from newsapp.models.article import Article
 
 
 @bp.route('/')

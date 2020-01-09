@@ -1,6 +1,6 @@
 from newsapp import db, celery
 from newsapp.config import Config
-from newsapp.models import Article
+from newsapp.models.article import Article
 from newsapp.util.parser import parse_links, parse_news
 
 

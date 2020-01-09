@@ -15,3 +15,10 @@ class Article(db.Model):
 
     def __repr__(self):
         return f'<Article serial={self.serialno} category={self.category}>'
+
+    def __iter__(self):
+        yield 'title', self.title
+        yield 'subtitle', self.subtitle
+        yield 'date', self.date.strftime('%d.%m.%y %H:%M')
+        yield 'content', self.content
+        yield 'link', self.link

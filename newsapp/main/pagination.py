@@ -2,7 +2,7 @@ import math
 
 from flask import url_for
 
-from newsapp.models import Article
+from newsapp.models.article import Article
 
 
 def pagination(category: str, number: int) -> dict:

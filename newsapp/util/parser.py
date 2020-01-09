@@ -1,5 +1,5 @@
 from newsapp.config import Config
-from newsapp.models import Article
+from newsapp.models.article import Article
 from newsapp.util.scrapper import Scraper
 
 
