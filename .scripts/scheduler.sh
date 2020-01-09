@@ -1,2 +1,2 @@
 #!/bin/sh
-celery -A newsapp.celery beat -l info
+celery -A entry.celery beat -l info

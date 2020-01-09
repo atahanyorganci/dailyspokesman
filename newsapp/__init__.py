@@ -9,6 +9,8 @@ db = SQLAlchemy()
 migrate = Migrate()
 celery = Celery(__name__, broker=Config.CELERY_BROKER_URL)
 
+from newsapp import tasks
+
 def create_app(config_name=Config):
     # Flask application
     app = Flask(__name__)
