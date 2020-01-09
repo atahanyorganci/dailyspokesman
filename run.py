@@ -1,11 +1,6 @@
-from newsapp import app, db
-from newsapp.models import Article
-
-
-@app.shell_context_processor
-def make_shell_context():
-    return {'db': db, 'Article': Article}
-
+from newsapp import create_app
+from newsapp import tasks
 
 if __name__ == "__main__":
-    app.run()
+    app = create_app()
+    app.run(debug=True)

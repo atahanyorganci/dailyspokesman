@@ -5,19 +5,25 @@ from flask_migrate import Migrate
 
 from newsapp.config import Config
 
-app = Flask(__name__)
-app.config.from_object(Config)
+db = SQLAlchemy()
+migrate = Migrate()
+celery = Celery(__name__, broker=Config.CELERY_BROKER_URL)
 
-db = SQLAlchemy(app)
-migrate = Migrate(app, db)
+def create_app(config_name=Config):
+    # Flask application
+    app = Flask(__name__)
+    app.config.from_object(config_name)
 
-celery = Celery(app.name, broker=app.config['CELERY_BROKER_URL'])
-celery.conf.update(app.config)
+    # Flask Extensions
+    db.init_app(app)
+    migrate.init_app(app, db)
+    celery.conf.update(app.config)
 
-from newsapp import tasks
+    # Blueprints
+    from newsapp.errors import bp as errors
+    from newsapp.main import bp as main
 
-from newsapp.errors import bp as errors
-from newsapp.main import bp as main
+    app.register_blueprint(errors)
+    app.register_blueprint(main)
 
-app.register_blueprint(errors)
-app.register_blueprint(main)
+    return app
