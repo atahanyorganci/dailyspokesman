@@ -31,3 +31,6 @@ def create_app(config_name=Config):
     app.register_blueprint(api)
 
     return app
+
+app = create_app()
+app.app_context().push()

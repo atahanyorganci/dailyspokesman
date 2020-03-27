@@ -1,6 +1,7 @@
 from newsapp.config import Config
 from newsapp.models.article import Article
 from newsapp.util.scrapper import Scraper
+import newsapp
 
 
 def parse_links(category: str) -> set:
@@ -14,7 +15,7 @@ def parse_links(category: str) -> set:
                     links.add(link)
             except Exception as ex:
                 links.add(link)
-                print(f'{type(ex)} exception has occured.')
+                print(f'{type(ex)} exception has occured.\n{ex}')
     return links
 
 
