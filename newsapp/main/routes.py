@@ -23,7 +23,9 @@ def news(category, number):
                 articles = Article.query.filter_by(category=name).order_by(
                     Article.date).paginate(page=number, per_page=5).items
                 articles = [dict(article) for article in articles]
-                return render_template('news.html', articles=articles, pagination=pagination(name, number))
+                return render_template('news.html',
+                                       articles=articles,
+                                       pagination=pagination(name, number))
             except Exception as ex:
                 print(ex)
                 break

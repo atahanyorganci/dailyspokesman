@@ -11,9 +11,7 @@ def info(category):
         if category == config['api']:
             name = config['url']
             count = Article.query.filter_by(category=name).count()
-            return jsonify({
-                'count': count,
-                'display': config['display']})
+            return jsonify({'count': count, 'display': config['display']})
     abort(400)
 
 
@@ -28,8 +26,8 @@ def single_article(category, number):
                 count = Article.query.filter_by(category=name).count()
                 if number > count:
                     break
-                article = Article.query.filter_by(
-                    category=name).order_by(Article.date)[number - 1]
+                article = Article.query.filter_by(category=name).order_by(
+                    Article.date)[number - 1]
                 return jsonify(dict(article))
             except:
                 break

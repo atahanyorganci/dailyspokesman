@@ -10,13 +10,12 @@ def update_news(category: str):
     print(f'* Found {len(links)} links in {category.upper()} category.')
     for link in links:
         news = parse_news(link, category)
-        a = Article(
-            serialno=news['serialno'],
-            category=news['category'],
-            title=news['title'],
-            subtitle=news['subtitle'],
-            content=news['content'],
-            link=news['link'])
+        a = Article(serialno=news['serialno'],
+                    category=news['category'],
+                    title=news['title'],
+                    subtitle=news['subtitle'],
+                    content=news['content'],
+                    link=news['link'])
         try:
             db.session.add(a)
             db.session.commit()

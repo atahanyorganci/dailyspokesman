@@ -27,8 +27,10 @@ class Config:
     SCRAPPER_BASE_URL = 'https://www.sozcu.com.tr/kategori/'
     CELERY_BROKER_URL = 'redis://localhost:6379/0'
     CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'
-    CELERYBEAT_SCHEDULE = {f'update-news-{category["api"]}': {
-        'task': 'newsapp.tasks.update_news',
-        'schedule': 300.0,
-        'args': (category['url'], )
-    } for category in CATEGORIES}
+    CELERYBEAT_SCHEDULE = {
+        f'update-news-{category["api"]}': {
+            'task': 'newsapp.tasks.update_news',
+            'schedule': 300.0,
+            'args': (category['url'],)
+        } for category in CATEGORIES
+    }

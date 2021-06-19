@@ -11,6 +11,7 @@ celery = Celery(__name__, broker=Config.CELERY_BROKER_URL)
 
 from newsapp import tasks
 
+
 def create_app(config_name=Config):
     # Flask application
     app = Flask(__name__)
@@ -31,6 +32,7 @@ def create_app(config_name=Config):
     app.register_blueprint(api)
 
     return app
+
 
 app = create_app()
 app.app_context().push()

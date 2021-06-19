@@ -11,7 +11,8 @@ def parse_links(category: str) -> set:
             link = comp.a['href']
             serialno = link.split('-')[-1][:-1]
             try:
-                if not Article.query.filter_by(serialno=int(serialno)).first() and '?_szc_galeri' not in link:
+                if not Article.query.filter_by(serialno=int(
+                        serialno)).first() and '?_szc_galeri' not in link:
                     links.add(link)
             except Exception as ex:
                 links.add(link)
