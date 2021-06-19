@@ -1,31 +1,26 @@
 {% extends "base.html" %}
-
 {% from 'pagination.html' import button %}
-
-{% block content %}
-<div class="container">
-    {% for article in articles %}
-    <div class="row article">
-        <h1>{{ article['title'] }}</h1>
-        <h2>{{ article['subtitle'] }}</h2>
-        <p className="meta">
-            {{ article['date'] }}, <a href="{{ article['link'] }}">original article</a>
-        </p>
-        <hr />
-        <p className="content">{{ article['content'] }}</p>
-    </div>
-    {% endfor %}
-    <div class="row justify-content-center">
-        <nav aria-label="Page navigation example">
-            <ul class="pagination">
-                {{ button('Previous', pagination['prev'], pagination['prev'] != '') }}
-                {% for label, url in pagination['labels'] %}
-                    {{ button(label, url) }}
-                {% endfor %}
-                {{ button('Next', pagination['next'], pagination['next'] != '') }}
-            </ul>
-        </nav>
-    </div>
+{% blockcontent %}
+{% for article in articles %}
+<div class="row article">
+    <h1>{{ article['title'] }}</h1>
+    <h2>{{ article['subtitle'] }}</h2>
+    <p className="meta">
+        {{ article['date'] }},
+        <a href="{{ article['link'] }}">original article</a>
+    </p>
+    <hr />
+    <p className="content">{{ article['content'] }}</p>
 </div>
-
+{% endfor %}
+<div class="row justify-content-center">
+    <nav aria-label="Page navigation example">
+        <ul class="pagination">
+            {{ button('Previous', pagination['prev'], pagination['prev'] != '')
+            }} {% for label, url in pagination['labels'] %} {{ button(label,
+            url) }} {% endfor %} {{ button('Next', pagination['next'],
+            pagination['next'] != '') }}
+        </ul>
+    </nav>
+</div>
 {% endblock %}
