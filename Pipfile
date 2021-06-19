@@ -4,16 +4,15 @@ url = "https://pypi.org/simple"
 verify_ssl = true
 
 [dev-packages]
-pylint = "*"
-autopep8 = "*"
+flake8 = "*"
 
 [packages]
 flask = "*"
 flask-sqlalchemy = "*"
-flask-migrate = "*" 
+flask-migrate = "*"
 bs4 = "*"
 requests = "*"
 celery = "*"
 
 [requires]
-python_version = "3.6"
+python_version = "3.9"
