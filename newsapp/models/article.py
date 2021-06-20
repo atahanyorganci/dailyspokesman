@@ -1,6 +1,8 @@
 from datetime import datetime
+import math
 
 from newsapp.models import db
+from newsapp.config import Config
 
 
 class Article(db.Model):
@@ -22,3 +24,8 @@ class Article(db.Model):
         yield 'date', self.date.strftime('%d.%m.%y %H:%M')
         yield 'content', self.content
         yield 'link', self.link
+
+    @classmethod
+    def page_count(cls, category: str):
+        count = cls.query.filter_by(category=category).count()
+        return math.ceil(count / Config.ARTICLE_PER_PAGE)

@@ -12,21 +12,19 @@ class Config:
     REDIS_URL = config('REDIS_URL')
     REDIS_TLS_URL = config('REDIS_TLS_URL', default=None)
     SQLALCHEMY_TRACK_MODIFICATIONS = False
-    CATEGORIES = [
-        {
-            'url': 'gundem',
-            'api': 'head',
+    CATEGORIES = {
+        'headlines': {
             'display': 'Headlines',
+            'url': 'gundem'
         },
-        {
-            'url': 'dunya',
-            'api': 'world',
+        'world': {
             'display': 'World',
+            'url': 'dunya'
         },
-        {
-            'url': 'ekonomi',
-            'api': 'econ',
+        'economy': {
             'display': 'Economy',
-        },
-    ]
-    SCRAPPER_BASE_URL = 'https://www.sozcu.com.tr/kategori/'
+            'url': 'ekonomi'
+        }
+    }
+    SCRAPER_BASE_URL = 'https://www.sozcu.com.tr/kategori/'
+    ARTICLE_PER_PAGE = 5

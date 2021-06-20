@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% from 'pagination.html' import button %}
-{% blockcontent %}
+{% block content %}
 {% for article in articles %}
 <div class="row article">
     <h1>{{ article['title'] }}</h1>

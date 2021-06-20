@@ -1,6 +1,5 @@
 from flask import Flask
 
-from newsapp import tasks
 from newsapp.config import Config
 from newsapp.models import db, migrate
 

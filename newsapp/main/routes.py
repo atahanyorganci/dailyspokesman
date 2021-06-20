@@ -13,20 +13,20 @@ def index():
 
 
 @bp.route('/<category>/<int:number>')
-def news(category, number):
-    if number < 1:
+def news(category: str, number: int):
+    if number < 1 or number > Article.page_count(category):
         abort(404)
-    for config in Config.CATEGORIES:
-        if category == config['api']:
-            name = config['url']
-            try:
-                articles = Article.query.filter_by(category=name).order_by(
-                    Article.date).paginate(page=number, per_page=5).items
-                articles = [dict(article) for article in articles]
-                return render_template('news.html',
-                                       articles=articles,
-                                       pagination=pagination(name, number))
-            except Exception as ex:
-                print(ex)
-                break
-    abort(404)
+    if category not in Config.CATEGORIES:
+        abort(404)
+
+    try:
+        articles = Article.query.filter_by(category=category) \
+            .order_by(Article.date) \
+            .paginate(page=number, per_page=5).items
+        articles = [dict(article) for article in articles]
+        return render_template('news.html',
+                               articles=articles,
+                               pagination=pagination(category, number))
+    except Exception as ex:
+        bp.logger.info(ex)
+        abort(500)
