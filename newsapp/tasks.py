@@ -1,4 +1,5 @@
 from newsapp.config import Config
+from newsapp.models import db
 from newsapp.models.article import Article
 from newsapp.util.parser import parse_links, parse_news
 
@@ -14,10 +15,6 @@ def update_news(category: str):
                     subtitle=news['subtitle'],
                     content=news['content'],
                     link=news['link'])
-        try:
-            db.session.add(a)
-            db.session.commit()
-        except Exception:
-            print('News article already exists.')
-        else:
-            print(f"News acquired {news['title']}, {news['serialno']}")
+        db.session.add(a)
+        db.session.commit()
+        print(f"News acquired {news['title']}, {news['serialno']}")
