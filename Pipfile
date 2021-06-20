@@ -15,6 +15,7 @@ requests = "*"
 python-decouple = "*"
 python-dotenv = "*"
 psycopg2 = "*"
+click = "*"
 
 [requires]
 python_version = "3.9"
