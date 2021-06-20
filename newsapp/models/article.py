@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from newsapp import db
+from newsapp.models import db
 
 
 class Article(db.Model):

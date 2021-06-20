@@ -12,7 +12,9 @@ flask-sqlalchemy = "*"
 flask-migrate = "*"
 bs4 = "*"
 requests = "*"
-celery = "*"
+python-decouple = "*"
+python-dotenv = "*"
+psycopg2 = "*"
 
 [requires]
 python_version = "3.9"
