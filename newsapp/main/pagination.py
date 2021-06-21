@@ -6,8 +6,8 @@ from newsapp.models.article import Article
 
 
 def pagination(category: str, number: int) -> dict:
-    count = Article.query.filter_by(category=category).count()
-    page_count = math.ceil(count / 5)
+    page_count = Article.page_count(category)
+
     out = {}
     if number == 1:
         out['prev'] = ''
