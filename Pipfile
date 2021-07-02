@@ -16,7 +16,9 @@ python-decouple = "*"
 python-dotenv = "*"
 psycopg2 = "*"
 click = "*"
+celery = "*"
 tabulate = "*"
+redis = "*"
 
 [requires]
 python_version = "3.9"

@@ -5,7 +5,7 @@ from tabulate import tabulate
 from newsapp.config import Config
 from newsapp.models import db, migrate
 from newsapp.models.article import Article
-from worker.tasks import update_news
+from newsapp.scraper.tasks import update_news
 
 
 def create_app(config_name=Config):
@@ -41,9 +41,9 @@ def create_app(config_name=Config):
 
         if category == 'all':
             for category in current_app.config['CATEGORIES']:
-                update_news(category)
+                update_news(category, logger=app.logger)
         else:
-            update_news(category)
+            update_news(category, logger=app.logger)
 
     @app.cli.group('article', help='Interact with articles in the db.')
     def article():

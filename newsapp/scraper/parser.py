@@ -1,6 +1,9 @@
+from typing import Set, Dict
+
 from newsapp.config import Config
+from newsapp.models import db
 from newsapp.models.article import Article
-from worker.scraper import Scraper
+from newsapp.scraper import Scraper
 
 
 def get_category_url(category: str) -> str:
@@ -8,7 +11,7 @@ def get_category_url(category: str) -> str:
     return f'{Config.SCRAPER_BASE_URL}{url}'
 
 
-def parse_links(category: str) -> set:
+def parse_links(category: str) -> Set[str]:
     links = set()
     with Scraper(get_category_url(category)) as page:
         for comp in page.findAll('div', {'class': 'listed-box'}):
@@ -24,7 +27,7 @@ def parse_links(category: str) -> set:
     return links
 
 
-def parse_news(link: str, category: str) -> dict:
+def parse_news(link: str, category: str) -> Dict[str, str]:
     parsed = {}
     with Scraper(link) as page:
         header = page.find('div', {'class': 'content-head'})

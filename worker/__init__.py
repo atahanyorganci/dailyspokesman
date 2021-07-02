@@ -1,15 +1,33 @@
-import redis
 from decouple import config
-from rq import Worker, Queue, Connection
+from celery import Celery
+from celery.schedules import crontab
+from celery.utils.log import get_task_logger
+
+from newsapp import create_app
+from newsapp.scraper.tasks import update_news
+
+flask_app = create_app()
+flask_app.app_context().push()
 
 REDIS_URL = config('REDIS_TLS_URL', default=None)
 if REDIS_URL is None:
     REDIS_URL = config('REDIS_URL')
 
-listen = ['high', 'default', 'low']
-connection = redis.from_url(REDIS_URL)
+app = Celery('tasks')
+app.conf.update(broker_url=REDIS_URL, result_backend=REDIS_URL)
 
-if __name__ == '__main__':
-    with Connection(connection):
-        worker = Worker(map(Queue, listen))
-        worker.work()
+
+@app.task
+def update(category: str):
+    logger = get_task_logger(__name__)
+    with flask_app.app_context():
+        count = update_news(category, logger=logger)
+    return count
+
+
+@app.on_after_configure.connect
+def setup_periodic_tasks(sender, **kwargs):
+    for category in flask_app.config['CATEGORIES']:
+        sender.add_periodic_task(120.0,
+                                 update.s(category),
+                                 name=f'Update {category}')
