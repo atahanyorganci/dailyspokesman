@@ -4,7 +4,6 @@ from newsapp.models.article import Article
 
 
 def update_news(category: str, *, logger) -> int:
-    logger.info('ASDFLKASDFK')
     links = parse_links(category)
     logger.info(f'Found {len(links)} articles in {category.upper()} category.')
     for link in links:
