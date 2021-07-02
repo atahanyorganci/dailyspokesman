@@ -15,8 +15,12 @@ class Article(db.Model):
     content = db.Column(db.Text, nullable=False)
     link = db.Column(db.Text, nullable=False)
 
+    @property
+    def short_title(self):
+        return self.title if len(self.title) < 50 else f'{self.title[:47]}...'
+
     def __repr__(self):
-        return f'<Article serial={self.serialno} category={self.category}>'
+        return f'Article(title="{self.short_title}", serialno={self.serialno}, category={self.category})'
 
     def __iter__(self):
         yield 'title', self.title
@@ -29,3 +33,12 @@ class Article(db.Model):
     def page_count(cls, category: str):
         count = cls.query.filter_by(category=category).count()
         return math.ceil(count / Config.ARTICLE_PER_PAGE)
+
+    @classmethod
+    def from_dict(cls, article):
+        return Article(serialno=article['serialno'],
+                       category=article['category'],
+                       title=article['title'],
+                       subtitle=article['subtitle'],
+                       content=article['content'],
+                       link=article['link'])

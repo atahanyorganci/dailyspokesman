@@ -16,6 +16,7 @@ python-decouple = "*"
 python-dotenv = "*"
 psycopg2 = "*"
 click = "*"
+tabulate = "*"
 
 [requires]
 python_version = "3.9"
