@@ -12,6 +12,7 @@ flask_app.app_context().push()
 REDIS_URL = config('REDIS_TLS_URL', default=None)
 if REDIS_URL is None:
     REDIS_URL = config('REDIS_URL')
+UPDATE_FREQUENCY = config('UPDATE_FREQUENCY', cast=float)
 
 app = Celery('tasks')
 app.conf.update(broker_url=REDIS_URL, result_backend=REDIS_URL)
@@ -28,6 +29,6 @@ def update(category: str):
 @app.on_after_configure.connect
 def setup_periodic_tasks(sender, **kwargs):
     for category in flask_app.config['CATEGORIES']:
-        sender.add_periodic_task(120.0,
+        sender.add_periodic_task(UPDATE_FREQUENCY,
                                  update.s(category),
                                  name=f'Update {category}')
