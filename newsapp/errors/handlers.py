@@ -11,7 +11,6 @@ def bad_request(error):
 
 @bp.app_errorhandler(404)
 def not_found_error(error):
-    print(error)
     return render_template('error.html', error=DESCRIPTIONS[404]), 404
 
 
