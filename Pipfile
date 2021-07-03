@@ -7,18 +7,18 @@ verify_ssl = true
 yapf = "*"
 
 [packages]
-flask = "*"
-flask-sqlalchemy = "*"
-flask-migrate = "*"
+Flask = "*"
+Flask-SQLAlchemy = "*"
+Flask-Migrate = "*"
 bs4 = "*"
 requests = "*"
 python-decouple = "*"
 python-dotenv = "*"
-psycopg2 = "*"
 click = "*"
 celery = "*"
 tabulate = "*"
 redis = "*"
+psycopg2-binary = "*"
 
 [requires]
 python_version = "3.9"
