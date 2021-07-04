@@ -1,5 +1,6 @@
 from datetime import datetime
 import math
+from typing import Dict, Optional
 
 from newsapp.models import db
 from newsapp.config import Config
@@ -35,10 +36,19 @@ class Article(db.Model):
         return math.ceil(count / Config.ARTICLE_PER_PAGE)
 
     @classmethod
-    def from_dict(cls, article):
-        return Article(serialno=article['serialno'],
-                       category=article['category'],
-                       title=article['title'],
-                       subtitle=article['subtitle'],
-                       content=article['content'],
-                       link=article['link'])
+    def get_recent(cls, *, category: Optional[str] = None, limit: int = 10):
+        query = cls.query.order_by(cls.date.desc())
+        if category:
+            query = query.filter_by(category=category)
+        query = query.limit(limit)
+        return query
+
+    @classmethod
+    def from_dict(cls, article: dict):
+        return Article(serialno=article.get('serialno'),
+                       category=article.get('category'),
+                       title=article.get('title'),
+                       subtitle=article.get('subtitle'),
+                       content=article.get('content'),
+                       link=article.get('link'),
+                       date=article.get('date'))

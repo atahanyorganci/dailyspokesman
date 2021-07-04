@@ -68,7 +68,7 @@ def create_app(config_name=Config):
             return
 
         if category == 'all':
-            articles = Article.query.order_by(Article.date.desc()).limit(count)
+            articles = Article.get_recent(limit=count)
             data = [[
                 article.serialno, article.short_title, article.date,
                 article.category
@@ -78,8 +78,7 @@ def create_app(config_name=Config):
                          headers=['Serial No', 'Title', 'Date', 'Category'],
                          tablefmt='presto'))
         else:
-            articles = Article.query.filter_by(category=category).order_by(
-                Article.date.desc()).limit(count)
+            articles = Article.get_recent(limit=count, category=category)
             data = [[
                 article.serialno,
                 article.short_title,
