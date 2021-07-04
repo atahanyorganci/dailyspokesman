@@ -14,9 +14,9 @@ def index():
 
 @bp.route('/<category>/<int:number>')
 def news(category: str, number: int):
-    if number < 1 or number > Article.page_count(category):
-        abort(404)
     if category not in Config.CATEGORIES:
+        abort(400)
+    if number < 1 or number > Article.page_count(category):
         abort(404)
 
     try:
