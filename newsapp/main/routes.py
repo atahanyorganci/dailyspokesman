@@ -21,7 +21,7 @@ def news(category: str, number: int):
 
     try:
         articles = Article.query.filter_by(category=category) \
-            .order_by(Article.date) \
+            .order_by(Article.date.desc()) \
             .paginate(page=number, per_page=5).items
         articles = [dict(article) for article in articles]
         return render_template('news.html',
