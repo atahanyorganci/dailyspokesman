@@ -30,8 +30,12 @@ def create_app(config_name=Config):
     def shell_context():
         return {'app': app, 'db': db, 'Article': Article}
 
-    @app.cli.command('scrape', help='Scrape news from given category.')
-    @click.argument('category')
+    @app.cli.group('article', help='Interact with articles in the db.')
+    def article():
+        pass
+
+    @article.command('scrape', help='Scrape news from given category.')
+    @click.argument('category', default='all')
     def scrape(category):
         allowed = {'all', *current_app.config['CATEGORIES']}
         if category not in allowed:
@@ -45,10 +49,6 @@ def create_app(config_name=Config):
         else:
             update_news(category, logger=app.logger)
 
-    @app.cli.group('article', help='Interact with articles in the db.')
-    def article():
-        pass
-
     @article.command('describe', help='Print info about saved articles')
     def describe():
         data = [[
@@ -58,7 +58,7 @@ def create_app(config_name=Config):
         print(tabulate(data, headers=['Category', 'Count'], tablefmt='presto'))
 
     @article.command('display', help='Display latest Article objects from db.')
-    @click.argument('category')
+    @click.argument('category', default='all')
     @click.option('--count', default=20, type=int)
     def display(category, count):
         allowed = {'all', *current_app.config['CATEGORIES']}
@@ -88,5 +88,13 @@ def create_app(config_name=Config):
                 tabulate(data,
                          headers=['Serial No', 'Title', 'Date'],
                          tablefmt='presto'))
+
+    @article.command('clear', help='Delete ALL articles in the db.')
+    def clear():
+        click.confirm('This command will delete ALL articles saved',
+                      abort=True)
+        count = Article.query.delete()
+        db.session.commit()
+        print(f'Deleted {count} articles.')
 
     return app
