@@ -10,7 +10,8 @@ def update_news(category: str, *, logger) -> int:
         news = parse_news(link, category)
         article = Article.from_dict(news)
         db.session.add(article)
-        db.session.commit()
         logger.info(f'Article saved: {article}')
+    db.session.commit()
+    logger.info(f'Updated {category.upper()}.')
 
     return len(links)
