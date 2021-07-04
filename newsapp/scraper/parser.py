@@ -1,3 +1,4 @@
+from datetime import datetime
 from typing import Set, Dict
 
 from newsapp.config import Config
@@ -38,4 +39,8 @@ def parse_news(link: str, category: str) -> Dict[str, str]:
         parsed['link'] = link
         parsed['serialno'] = int(link.split('-')[-1][:-1])
         parsed['category'] = category
+
+        date = header.find('div', {'class': 'date-time'})
+        date_str = date.text[14:].strip()
+        parsed['date'] = datetime.strptime(date_str, '%H:%M, %d/%m/%Y')
     return parsed
