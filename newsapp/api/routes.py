@@ -1,34 +1,46 @@
 from flask import abort, jsonify
+from sqlalchemy.exc import NoResultFound
 
 from newsapp.api import bp
 from newsapp.config import Config
 from newsapp.models.article import Article
 
 
+@bp.route('/')
+def index():
+    info = {}
+    for category in Config.CATEGORIES:
+        info[category] = Article.query.filter_by(category=category).count()
+    return jsonify(info)
+
+
 @bp.route('/<category>')
-def info(category):
-    for config in Config.CATEGORIES:
-        if category == config['api']:
-            name = config['url']
-            count = Article.query.filter_by(category=name).count()
-            return jsonify({'count': count, 'display': config['display']})
-    abort(400)
+def get_category(category: str):
+    if category not in Config.CATEGORIES:
+        abort(400)
+
+    try:
+        articles = Article.query.filter_by(category=category) \
+            .order_by(Article.date.desc()) \
+            .paginate(page=1, per_page=5).items
+        return jsonify([dict(article) for article in articles])
+    except Exception as ex:
+        bp.logger.info(ex)
+        abort(500)
 
 
 @bp.route('/<category>/<int:number>')
-def single_article(category, number):
-    if number < 1:
-        abort(400)
-    for config in Config.CATEGORIES:
-        if category == config['api']:
-            name = config['url']
-            try:
-                count = Article.query.filter_by(category=name).count()
-                if number > count:
-                    break
-                article = Article.query.filter_by(category=name).order_by(
-                    Article.date)[number - 1]
-                return jsonify(dict(article))
-            except:
-                break
-    abort(400)
+def news(category: str, number: int):
+    if number < 1 or number > Article.page_count(category):
+        abort(404)
+    if category not in Config.CATEGORIES:
+        abort(404)
+
+    try:
+        articles = Article.query.filter_by(category=category) \
+            .order_by(Article.date.desc()) \
+            .paginate(page=number, per_page=5).items
+        return jsonify([dict(article) for article in articles])
+    except Exception as ex:
+        bp.logger.info(ex)
+        abort(500)
