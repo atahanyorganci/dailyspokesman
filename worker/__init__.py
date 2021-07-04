@@ -12,6 +12,8 @@ flask_app.app_context().push()
 REDIS_URL = config('REDIS_TLS_URL', default=None)
 if REDIS_URL is None:
     REDIS_URL = config('REDIS_URL')
+else:
+    REDIS_URL = f'{REDIS_URL}?ssl_cert_reqs=none'
 UPDATE_FREQUENCY = config('UPDATE_FREQUENCY', cast=float)
 
 app = Celery('tasks')
