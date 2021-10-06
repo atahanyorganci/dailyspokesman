@@ -1,0 +1,63 @@
+[tool.poetry]
+name = "newsapp"
+version = "0.1.0"
+description = "DailySpokesMan (DSM) is an web app that serves a modified local copy of Sözcü newspaper."
+authors = ["Atahan Yorgancı <atahanyorganci@hotmail.com>"]
+license = "MIT"
+repository = "https://github.com/atahanyorganci/dailyspokesman.git"
+
+[tool.poetry.dependencies]
+python = "^3.9"
+Flask = "^2.0.2"
+Flask-SQLAlchemy = "^2.5.1"
+Flask-Migrate = "^3.1.0"
+beautifulsoup4 = "^4.10.0"
+requests = "^2.26.0"
+python-decouple = "^3.5"
+click = "<8.0"
+tabulate = "^0.8.9"
+redis = "^3.5.3"
+psycopg2-binary = "^2.9.1"
+gunicorn = "^20.1.0"
+celery = "^5.1.2"
+
+[tool.poetry.dev-dependencies]
+black = "^21.9b0"
+pylint = "^2.11.1"
+isort = "^5.9.3"
+pytest = "^6.2.5"
+pre-commit = "^2.15.0"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.black]
+line-length = 90
+target-version = ["py39"]
+include = "newsapp"
+
+[tool.isort]
+profile = "black"
+multi_line_output = 3
+line_length = 90
+
+[tool.pylint.MESSAGE_CONTROL]
+disable = """
+    missing-class-docstring,
+    missing-module-docstring,
+    missing-function-docstring,
+    too-many-instance-attributes,
+    too-few-public-methods,
+    invalid-name,
+"""
+enable = "useless-suppression"
+
+[tool.pylint.REPORTS]
+reports="no"
+
+[tool.pylint.FORMAT]
+max-line-length="90"
+
+[tool.pylint.BASIC]
+good-names = "df"
