@@ -1,7 +1,6 @@
-from decouple import config
 from celery import Celery
-from celery.schedules import crontab
 from celery.utils.log import get_task_logger
+from decouple import config
 
 from newsapp import create_app
 from newsapp.scraper.tasks import update_news
@@ -9,14 +8,14 @@ from newsapp.scraper.tasks import update_news
 flask_app = create_app()
 flask_app.app_context().push()
 
-REDIS_URL = config('REDIS_TLS_URL', default=None)
+REDIS_URL = config("REDIS_TLS_URL", default=None)
 if REDIS_URL is None:
-    REDIS_URL = config('REDIS_URL')
+    REDIS_URL = config("REDIS_URL")
 else:
-    REDIS_URL = f'{REDIS_URL}?ssl_cert_reqs=none'
-UPDATE_FREQUENCY = config('UPDATE_FREQUENCY', cast=float)
+    REDIS_URL = f"{REDIS_URL}?ssl_cert_reqs=none"
+UPDATE_FREQUENCY = config("UPDATE_FREQUENCY", cast=float)
 
-app = Celery('tasks')
+app = Celery("tasks")
 app.conf.update(broker_url=REDIS_URL, result_backend=REDIS_URL)
 
 
@@ -30,7 +29,7 @@ def update(category: str):
 
 @app.on_after_configure.connect
 def setup_periodic_tasks(sender, **kwargs):
-    for category in flask_app.config['CATEGORIES']:
-        sender.add_periodic_task(UPDATE_FREQUENCY,
-                                 update.s(category),
-                                 name=f'Update {category}')
+    for category in flask_app.config["CATEGORIES"]:
+        sender.add_periodic_task(
+            UPDATE_FREQUENCY, update.s(category), name=f"Update {category}"
+        )
