@@ -20,6 +20,7 @@ redis = "^3.5.3"
 psycopg2-binary = "^2.9.1"
 gunicorn = "^20.1.0"
 celery = "^5.1.2"
+yarl = "^1.7.0"
 
 [tool.poetry.dev-dependencies]
 black = "^21.9b0"
