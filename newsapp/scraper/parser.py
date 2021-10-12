@@ -1,47 +1,60 @@
 from datetime import datetime
-from typing import Set, Dict
+from typing import Any
+
+from yarl import URL
 
 from newsapp.config import Config
 from newsapp.models.article import Article
-from newsapp.scraper import Scraper
+from newsapp.scraper import NewsItem, ScrapeError, scrape
 
 
-def get_category_url(category: str) -> str:
-    url = Config.CATEGORIES[category]["url"]
-    return f"{Config.SCRAPER_BASE_URL}{url}"
+def get_category_url(category: str) -> URL:
+    category_path = Config.CATEGORIES[category]["url"]
+    return Config.SCRAPER_BASE_URL / category_path
 
 
-def parse_links(category: str) -> Set[str]:
-    links = set()
-    with Scraper(get_category_url(category)) as page:
-        for comp in page.findAll("div", {"class": "listed-box"}):
-            link = comp.a["href"]
-            serialno = link.split("-")[-1][:-1]
-            try:
-                if (
-                    not Article.query.filter_by(serialno=int(serialno)).first()
-                    and "?_szc_galeri" not in link
-                ):
-                    links.add(link)
-            except Exception as ex:
-                links.add(link)
-                print(f"{type(ex)} exception has occured.\n{ex}")
-    return links
+def parse_category_page(category: str) -> set[NewsItem]:
+    category_url = get_category_url(category)
+    category_page = scrape(category_url)
+    urls: set[URL] = set()
+
+    for comp in category_page.findAll("div", {"class": "news-item"}):
+        url = URL(comp.a["href"])
+        slug = url.path.strip("/").split("/")[-1]
+        serialno = slug.split("-")[-1]
+
+        # URL paths containing "?_szc_galeri" are not valid articles
+        if "?_szc_galeri" in url.path:
+            continue
+
+        # Check if Article with given serialno exists
+        if Article.query.filter_by(serialno=int(serialno)).first():
+            continue
+
+        urls.add(NewsItem(url=url, slug=slug, serialno=serialno, category=category))
+    return urls
 
 
-def parse_news(link: str, category: str) -> Dict[str, str]:
+def parse_news_item(news_item: NewsItem) -> dict[str, Any]:
+    page = scrape(news_item.url)
+    article = page.find("article")
+
+    if article is None:
+        raise ScrapeError(f"{news_item} doesn't contain article element.")
     parsed = {}
-    with Scraper(link) as page:
-        header = page.find("div", {"class": "content-head"})
-        body = page.find("div", {"class": "content-element"})
-        parsed["title"] = header.h1.text
-        parsed["subtitle"] = header.h2.text
-        parsed["content"] = " ".join([p.text for p in body.findAll("p")])
-        parsed["link"] = link
-        parsed["serialno"] = int(link.split("-")[-1][:-1])
-        parsed["category"] = category
 
-        date = header.find("div", {"class": "date-time"})
-        date_str = date.text[14:].strip()
-        parsed["date"] = datetime.strptime(date_str, "%H:%M, %d/%m/%Y")
+    # Article content
+    parsed["title"] = article.h1.text
+    parsed["subtitle"] = article.h2.text
+    parsed["content"] = " ".join([p.text for p in article.findAll("p")])
+
+    # Link info
+    parsed["category"] = news_item.category
+    parsed["link"] = str(news_item.url)
+    parsed["serialno"] = int(news_item.slug.split("-")[-1])
+
+    # Parse article date
+    meta_date = article.findAll("span", {"class": "content-meta-date"})[-1]
+    date_str = meta_date.time["datetime"]
+    parsed["date"] = datetime.strptime(date_str, "%Y-%m-%dT%H:%M:%S%z")
     return parsed

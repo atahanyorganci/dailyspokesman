@@ -1,4 +1,5 @@
 from decouple import config
+from yarl import URL
 
 
 def get_database_url() -> str:
@@ -17,5 +18,5 @@ class Config:
         "world": {"display": "World", "url": "dunya"},
         "economy": {"display": "Economy", "url": "ekonomi"},
     }
-    SCRAPER_BASE_URL = "https://www.sozcu.com.tr/kategori/"
+    SCRAPER_BASE_URL = URL("https://www.sozcu.com.tr/kategori/")
     ARTICLE_PER_PAGE = 5

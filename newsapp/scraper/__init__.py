@@ -1,24 +1,32 @@
+from dataclasses import dataclass
+
 import requests
 from bs4 import BeautifulSoup
+from yarl import URL
 
 
-class Scraper(object):
-    def __init__(self, url: str) -> None:
-        self.__url = url
-        self.soup = None
-        self.status = None
+class ScrapeError(Exception):
+    pass
 
-    def __enter__(self) -> BeautifulSoup:
-        try:
-            with requests.get(self.__url) as resp:
-                html = resp.text
-        except Exception as ex:
-            self.__exit__(type(ex), ex, __name__)
-        else:
-            self.status = resp.status_code
-            self.soup = BeautifulSoup(html, "html.parser")
-            return self.soup
 
-    def __exit__(self, exc_type, exc_value, exc_trace) -> None:
-        if isinstance(exc_type, Exception):
-            raise exc_type(exc_value)
+def scrape(url: URL) -> BeautifulSoup:
+    response = requests.get(str(url))
+    if not response.ok:
+        raise ScrapeError(f"Request to {url} failed with status {response.status_code}")
+    return BeautifulSoup(response.text, "html.parser")
+
+
+@dataclass(frozen=True)
+class NewsItem:
+    url: URL
+    slug: str
+    serialno: str
+    category: str
+
+    def __eq__(self, o: object) -> bool:
+        if not isinstance(o, NewsItem):
+            return False
+        return self.url == o.url
+
+    def __hash__(self) -> int:
+        return hash(str(self.url))

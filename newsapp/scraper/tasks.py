@@ -1,17 +1,19 @@
-from newsapp.scraper.parser import parse_links, parse_news
+from logging import Logger
+
 from newsapp.models import db
 from newsapp.models.article import Article
+from newsapp.scraper.parser import parse_category_page, parse_news_item
 
 
-def update_news(category: str, *, logger) -> int:
-    links = parse_links(category)
-    logger.info(f"Found {len(links)} articles in {category.upper()} category.")
-    for link in links:
-        news = parse_news(link, category)
-        article = Article.from_dict(news)
+def update_news(category: str, *, logger: Logger) -> int:
+    news_items = parse_category_page(category)
+    logger.info(f"Found {len(news_items)} articles in {category.upper()} category.")
+    for news_item in news_items:
+        parsed = parse_news_item(news_item)
+        article = Article.from_dict(parsed)
         db.session.add(article)
         logger.info(f"Article saved: {article}")
     db.session.commit()
     logger.info(f"Updated {category.upper()}.")
 
-    return len(links)
+    return len(news_items)
