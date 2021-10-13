@@ -5,6 +5,10 @@ description = "DailySpokesMan (DSM) is an web app that serves a modified local c
 authors = ["Atahan Yorgancı <atahanyorganci@hotmail.com>"]
 license = "MIT"
 repository = "https://github.com/atahanyorganci/dailyspokesman.git"
+packages = [
+    { include = "newsapp" },
+    { include = "worker" },
+]
 
 [tool.poetry.dependencies]
 python = "^3.9"
