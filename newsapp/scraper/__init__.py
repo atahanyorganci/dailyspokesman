@@ -20,7 +20,7 @@ def scrape(url: URL) -> BeautifulSoup:
 class NewsItem:
     url: URL
     slug: str
-    serialno: str
+    serial_no: str
     category: str
 
     def __eq__(self, o: object) -> bool:

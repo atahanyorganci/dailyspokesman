@@ -10,7 +10,7 @@ def update_news(category: str, *, logger: Logger) -> int:
     logger.info(f"Found {len(news_items)} articles in {category.upper()} category.")
     for news_item in news_items:
         parsed = parse_news_item(news_item)
-        article = Article.from_dict(parsed)
+        article = Article(**parsed)
         db.session.add(article)
         logger.info(f"Article saved: {article}")
     db.session.commit()

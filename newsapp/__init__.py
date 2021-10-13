@@ -70,7 +70,7 @@ def create_app(config_name=Config):
         if category == "all":
             articles = Article.get_recent(limit=count)
             data = [
-                [article.serialno, article.short_title, article.date, article.category]
+                [article.serial_no, article.short_title, article.date, article.category]
                 for article in articles
             ]
             print(
@@ -84,7 +84,7 @@ def create_app(config_name=Config):
             articles = Article.get_recent(limit=count, category=category)
             data = [
                 [
-                    article.serialno,
+                    article.serial_no,
                     article.short_title,
                     article.date,
                 ]

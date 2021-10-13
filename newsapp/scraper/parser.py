@@ -21,17 +21,17 @@ def parse_category_page(category: str) -> set[NewsItem]:
     for comp in category_page.findAll("div", {"class": "news-item"}):
         url = URL(comp.a["href"])
         slug = url.path.strip("/").split("/")[-1]
-        serialno = slug.split("-")[-1]
+        serial_no = int(slug.split("-")[-1])
 
         # URL paths containing "?_szc_galeri" are not valid articles
         if "?_szc_galeri" in url.path:
             continue
 
-        # Check if Article with given serialno exists
-        if Article.query.filter_by(serialno=int(serialno)).first():
+        # Check if Article with given serial_no exists
+        if Article.query.filter_by(serial_no=int(serial_no)).first():
             continue
 
-        urls.add(NewsItem(url=url, slug=slug, serialno=serialno, category=category))
+        urls.add(NewsItem(url=url, slug=slug, serial_no=serial_no, category=category))
     return urls
 
 
@@ -49,9 +49,9 @@ def parse_news_item(news_item: NewsItem) -> dict[str, Any]:
     parsed["content"] = " ".join([p.text for p in article.findAll("p")])
 
     # Link info
+    parsed["url"] = str(news_item.url)
     parsed["category"] = news_item.category
-    parsed["link"] = str(news_item.url)
-    parsed["serialno"] = int(news_item.slug.split("-")[-1])
+    parsed["serial_no"] = news_item.serial_no
 
     # Parse article date
     meta_date = article.findAll("span", {"class": "content-meta-date"})[-1]
