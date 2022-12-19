@@ -38,7 +38,7 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.black]
 line-length = 90
-target-version = ["py39"]
+target-version = ["py310"]
 include = "newsapp"
 
 [tool.isort]
