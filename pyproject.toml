@@ -62,6 +62,3 @@ reports="no"
 
 [tool.pylint.FORMAT]
 max-line-length="90"
-
-[tool.pylint.BASIC]
-good-names = "df"
