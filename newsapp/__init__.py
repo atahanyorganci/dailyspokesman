@@ -39,7 +39,7 @@ def create_app(config_name=Config):
     def scrape(category):
         allowed = {"all", *current_app.config["CATEGORIES"]}
         if category not in allowed:
-            allowed = ", ".join(key for key in allowed.keys())
+            allowed = ", ".join(allowed)
             print(f"Unknown category, allowed: {allowed}")
             return
 
@@ -63,7 +63,7 @@ def create_app(config_name=Config):
     def display(category, count):
         allowed = {"all", *current_app.config["CATEGORIES"]}
         if category not in allowed:
-            allowed = ", ".join(key for key in allowed.keys())
+            allowed = ", ".join(allowed)
             print(f"Unknown category, allowed: {allowed}")
             return
 
