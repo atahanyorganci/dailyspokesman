@@ -1,26 +1,27 @@
 {% extends "base.html" %}
 {% from 'pagination.html' import button %}
 {% block content %}
+
 {% for article in articles %}
 <div class="row article">
-    <h1>{{ article['title'] }}</h1>
-    <h2>{{ article['subtitle'] }}</h2>
-    <p className="meta">
-        {{ article['date'] }},
-        <a href="{{ article['link'] }}">original article</a>
-    </p>
-    <hr />
-    <p className="content">{{ article['content'] }}</p>
+  <h1>{{ article['title'] }}</h1>
+  <h2>{{ article['subtitle'] }}</h2>
+  <p className="meta">
+    {{ article['date'] }},
+    <a href="{{ article['link'] }}">original article</a>
+  </p>
+  <hr />
+  <p className="content">{{ article['content'] }}</p>
 </div>
 {% endfor %}
-<div class="row justify-content-center">
-    <nav aria-label="Page navigation example">
-        <ul class="pagination">
-            {{ button('Previous', pagination['prev'], pagination['prev'] != '')
-            }} {% for label, url in pagination['labels'] %} {{ button(label,
-            url) }} {% endfor %} {{ button('Next', pagination['next'],
-            pagination['next'] != '') }}
-        </ul>
-    </nav>
-</div>
+
+<nav aria-label="News page navigation">
+  <ul class="pagination justify-content-center">
+    {{ button('Previous', pagination['prev'], pagination['prev'] != '') }}
+    {% for label, url in pagination['labels'] %}
+    {{ button(label, url) }}
+    {% endfor %}
+    {{ button('Next', pagination['next'], pagination['next'] != '')}}
+  </ul>
+</nav>
 {% endblock %}
