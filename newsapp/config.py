@@ -15,6 +15,7 @@ class Config:
         "headlines": {"display": "Headlines", "url": "gundem"},
         "world": {"display": "World", "url": "dunya"},
         "economy": {"display": "Economy", "url": "ekonomi"},
+        "automotive": {"display": "Automotive", "url": "otomotiv"},
     }
     SCRAPER_BASE_URL = URL("https://www.sozcu.com.tr/kategori/")
     ARTICLE_PER_PAGE = 5
