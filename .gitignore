@@ -1,12 +1,11 @@
 # Byte-compiled / optimized / DLL files
 __pycache__/
 
-# Celery stuff
-celerybeat-schedule*
-celerybeat.pid
-
 # Distribution / packaging
 dist/
 
 # Env
 .env
+
+# VSCode
+.vscode
